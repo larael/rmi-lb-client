@@ -14,7 +14,8 @@ public class MainClient {
 		serviceUrls.add("rmi://localhost:8099/CalculatorRMIService");
 		RmiLbServiceConfig<CalculatorService> config = new RmiLbServiceConfig<CalculatorService>(
 				serviceUrls, CalculatorService.class);
-		config.setMonitorPeriod(60L);
+		config.setMonitorPeriod(60L);//default 600 seconds
+		config.setLookupStubOnStartup(true); // default is false;
 		RmiProxyFactory factory = RmiProxyFactory.getInstance();
 		CalculatorService as = factory.create(config);
 		for (int i = 0; i < 1000; i++) {

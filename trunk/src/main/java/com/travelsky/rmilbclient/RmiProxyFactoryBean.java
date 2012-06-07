@@ -11,6 +11,19 @@ public class RmiProxyFactoryBean implements FactoryBean {
 	private Object serviceProxy;
 
 	private RmiLbServiceConfig<?> config;
+	
+	/**
+	 * 
+	 */
+	public RmiProxyFactoryBean() {
+	}
+
+	/**
+	 * @param config
+	 */
+	public RmiProxyFactoryBean(RmiLbServiceConfig<?> config) {
+		this.config = config;
+	}
 
 	public Object getObject() {
 		RmiProxyFactory factory = RmiProxyFactory.getInstance();
@@ -25,6 +38,14 @@ public class RmiProxyFactoryBean implements FactoryBean {
 
 	public boolean isSingleton() {
 		return true;
+	}
+
+	public RmiLbServiceConfig<?> getConfig() {
+		return config;
+	}
+
+	public void setConfig(RmiLbServiceConfig<?> config) {
+		this.config = config;
 	}
 
 }
