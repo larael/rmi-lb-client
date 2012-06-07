@@ -9,6 +9,21 @@
 		<spring.version>2.5.6</spring.version>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>googlecode-repo-releases</id>
+			<name>Maven Repository Releases</name>
+			<url>dav:https://rmi-lb-client.googlecode.com/svn/maven-repo/releases</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+		<snapshotRepository>
+			<id>googlecode-repo-snapshots</id>
+			<name>Maven Repository Snapshots</name>
+			<url>dav:https://rmi-lb-client.googlecode.com/svn/maven-repo/snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -51,6 +66,13 @@
 	</dependencies>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
