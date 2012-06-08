@@ -4,6 +4,7 @@
 	<groupId>com.travelsky</groupId>
 	<artifactId>rmi-lb-client</artifactId>
 	<version>0.9.9</version>
+	<name>rmi-lb-client</name>
 
 	<properties>
 		<spring.version>[2.5.6,)</spring.version>
