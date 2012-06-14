@@ -4,16 +4,20 @@
 	<groupId>com.travelsky</groupId>
 	<artifactId>rmi-lb-client</artifactId>
 	<version>0.9.9</version>
-	<name>rmi-lb-client</name>
 
 	<properties>
-		<spring.version>[2.5.6,)</spring.version>
+		<spring.version>2.5.6</spring.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
@@ -47,13 +51,6 @@
 	</dependencies>
 
 	<build>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav</artifactId>
-				<version>1.0-beta-2</version>
-			</extension>
-		</extensions>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

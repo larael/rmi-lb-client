@@ -33,15 +33,15 @@ public class RmiProxyFactory {
 	 * <pre>
 	 * List&lt;String&gt; serviceUrls = new ArrayList&lt;String&gt;();
 	 * 
-	 * serviceUrls.add(rmi://localhost:8098/CalculatorRMIService);
-	 * serviceUrls.add(rmi://localhost:8099/CalculatorRMIService);
+	 * serviceUrls.add(&quot;rmi://localhost:8098/CalculatorRMIService&quot;);
+	 * serviceUrls.add(&quot;rmi://localhost:8099/CalculatorRMIService&quot;);
 	 * 
-	 * RmiLbServiceConfig<CalculatorService> config = new RmiLbServiceConfig(serviceUrls,
+	 * RmiLbServiceConfig config = new RmiLbServiceConfig(serviceUrls,
 	 * 		CalculatorService.class);
 	 * 
 	 * RmiProxyFactory factory = RmiProxyFactory.getInstance();
 	 * 
-	 * CalculatorService as = factory.create(config);
+	 * CalculatorService as = (CalculatorService) factory.create(config);
 	 * 
 	 * </pre>
 	 * 

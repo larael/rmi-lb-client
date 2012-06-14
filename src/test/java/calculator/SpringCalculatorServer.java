@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class SpringCalculatorServer {
     public static void main(String[] args) throws Exception {
-        System.out.println("Starting of the Calculator Application exposed as RMI Services...");
+        System.out.println("Starting of the SCA Calculator Application exposed as RMI Services...");
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext-rmi.xml");  
         System.out.println("... Press Enter to Exit...");
         System.in.read();
