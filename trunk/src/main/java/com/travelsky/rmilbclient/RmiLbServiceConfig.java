@@ -107,6 +107,32 @@ public class RmiLbServiceConfig<E> implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((serviceUrls == null) ? 0 : serviceUrls.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RmiLbServiceConfig other = (RmiLbServiceConfig) obj;
+		if (serviceUrls == null) {
+			if (other.serviceUrls != null)
+				return false;
+		} else if (!serviceUrls.equals(other.serviceUrls))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "RmiLbServiceConfig [lookupStubOnStartup=" + lookupStubOnStartup
 				+ ", monitorPeriod=" + monitorPeriod + ", serviceInterface="

@@ -2,6 +2,8 @@ package com.travelsky.rmilbclient;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,10 @@ public class RmiProxyFactory {
 
 	protected static Logger logger = LoggerFactory
 			.getLogger(RmiProxyFactory.class.getName());
+
+	@SuppressWarnings("unchecked")
+	private final static Map<RmiLbServiceConfig, Object> RMI_REMOTE_SERVICE_MAP = 
+		new ConcurrentHashMap<RmiLbServiceConfig, Object>();
 
 	/**
 	 * single instance
@@ -48,26 +54,44 @@ public class RmiProxyFactory {
 	 * 
 	 * @return a proxy to the object with the specified interface.
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> T create(RmiLbServiceConfig<T> config, ClassLoader loader) {
-
-		StubManager stubMgr = StubManagerBuilder
-				.buildStubManager(config);
-		// start monitor
-		StubMonitorService monitorService = new StubMonitorService(config
-				.getMonitorPeriod(), stubMgr);
-		monitorService.startMonitor();
-		//create proxy
-		InvocationHandler handler = new RmiProxy(stubMgr);
-		Class<T> api = config.getServiceInterface();
-		Object proxyObj = Proxy.newProxyInstance(loader, new Class[] {api}, handler);
-
-		return api.cast(proxyObj);
+		T ret = (T) RMI_REMOTE_SERVICE_MAP.get(config);
+		if (ret == null) {
+			ret = createRawService(config, loader);
+			RMI_REMOTE_SERVICE_MAP.put(config, ret);
+		}
+		return ret;
 	}
 
 	public <T> T create(RmiLbServiceConfig<T> config) {
 		return create(config, Thread.currentThread().getContextClassLoader());
 	}
 
+
+	/**
+	 * @param <T>
+	 * @param config
+	 * @param loader
+	 * @return
+	 */
+	private <T> T createRawService(RmiLbServiceConfig<T> config,
+			ClassLoader loader) {
+		T ret;
+		StubManager stubMgr = StubManagerBuilder.buildStubManager(config);
+		// start monitor
+		StubMonitorService monitorService = new StubMonitorService(config
+				.getMonitorPeriod(), stubMgr);
+		monitorService.startMonitor();
+		// create proxy
+		InvocationHandler handler = new RmiProxy(stubMgr);
+		Class<T> api = config.getServiceInterface();
+		Object proxyObj = Proxy.newProxyInstance(loader,
+				new Class[] { api }, handler);
+		ret = api.cast(proxyObj);
+		return ret;
+	}
+	
 	public static RmiProxyFactory getInstance() {
 		return m_instance;
 	}
