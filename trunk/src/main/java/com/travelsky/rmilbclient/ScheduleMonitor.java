@@ -5,13 +5,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author zhongfeng
- *
+ * 
  */
 class ScheduleMonitor implements Runnable {
-	
+
 	private static final Logger logger = LoggerFactory
-	.getLogger(ScheduleMonitor.class);
-	
+			.getLogger(ScheduleMonitor.class);
+
 	private StubManager stubMgr;
 
 	/**
@@ -28,11 +28,12 @@ class ScheduleMonitor implements Runnable {
 	}
 
 	public void run() {
-		if(logger.isDebugEnabled())
+		if (logger.isDebugEnabled())
 			logger.debug("Start monitor process");
-		stubMgr.updateStubsStatus();
+		if (stubMgr.isExistBrokenNode())
+			stubMgr.updateStubsStatus();
 	}
-	
+
 	public StubManager getStubMgr() {
 		return stubMgr;
 	}

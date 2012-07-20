@@ -16,7 +16,7 @@ public class RmiServiceFactory {
 	private final static Map<String, Object> REMOTE_SERVICE = new ConcurrentHashMap<String, Object>();
 
 	@SuppressWarnings("unchecked")
-	public <T> T createRemoteService(Class<T> cls, String remoteServiceName) {
+	public synchronized <T> T createRemoteService(Class<T> cls, String remoteServiceName) {
 		T ret = (T) REMOTE_SERVICE.get(remoteServiceName);
 		if (ret == null) {
 			RmiLbServiceConfig<T> config = new RmiLbServiceConfig<T>(

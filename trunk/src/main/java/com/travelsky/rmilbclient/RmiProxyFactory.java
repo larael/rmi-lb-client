@@ -55,7 +55,7 @@ public class RmiProxyFactory {
 	 * @return a proxy to the object with the specified interface.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T create(RmiLbServiceConfig<T> config, ClassLoader loader) {
+	public synchronized <T> T create(RmiLbServiceConfig<T> config, ClassLoader loader) {
 		T ret = (T) RMI_REMOTE_SERVICE_MAP.get(config);
 		if (ret == null) {
 			ret = createRawService(config, loader);
