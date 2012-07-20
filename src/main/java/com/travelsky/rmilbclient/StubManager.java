@@ -115,8 +115,26 @@ public class StubManager {
 	public void updateStubsStatus() throws RmiLookupFailureException {
 		wLock.lock();
 		try {
+			logger.info("updateStubsStatus begin");
 			if (refreshCachedStubArray())// 如果有状态变化,重新生成lbSchedule
 				updateLBSchedule();
+		} finally {
+			wLock.unlock();
+		}
+	}
+
+	/**
+	 * 检查节点的状态是否有不是StubStatus.ACTIVE
+	 * @return 有true,没有false
+	 */
+	public boolean isExistBrokenNode() {
+		wLock.lock();
+		try {
+			for (StubComponent stubComp : stubArr) {
+				if (!stubComp.getStatus().equals(StubStatus.ACTIVE))
+					return true;
+			}
+			return false;
 		} finally {
 			wLock.unlock();
 		}
