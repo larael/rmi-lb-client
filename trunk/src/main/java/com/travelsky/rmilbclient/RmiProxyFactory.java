@@ -77,7 +77,7 @@ public class RmiProxyFactory {
 	 */
 	private <T> T createRawService(RmiLbServiceConfig<T> config,
 			ClassLoader loader) {
-		T ret;
+		
 		StubManager stubMgr = StubManagerBuilder.buildStubManager(config);
 		// start monitor
 		StubMonitorService monitorService = new StubMonitorService(config
@@ -88,7 +88,7 @@ public class RmiProxyFactory {
 		Class<T> api = config.getServiceInterface();
 		Object proxyObj = Proxy.newProxyInstance(loader,
 				new Class[] { api }, handler);
-		ret = api.cast(proxyObj);
+		T ret = api.cast(proxyObj);
 		return ret;
 	}
 	
