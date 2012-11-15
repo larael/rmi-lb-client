@@ -24,6 +24,7 @@ public abstract class WeightedLoadBalancer<E> extends LoadBalancerSupport<E> {
     	return tmp;
     }
     
+    
     private void deepCloneDistributionRatios(List<Integer> distributionRatios) {
         for (Integer value : distributionRatios) {
             this.distributionRatioList.add(value);
