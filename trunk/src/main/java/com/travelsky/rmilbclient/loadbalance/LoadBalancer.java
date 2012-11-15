@@ -42,4 +42,12 @@ public interface LoadBalancer<E> {
 	 * @return the processors
 	 */
 	E select();
+	
+	/**
+	 * Returns the selected processor based on load balance algorithm
+	 * Used by ConsistHash
+	 * 
+	 * @return the processors
+	 */
+	E select(String key);
 }

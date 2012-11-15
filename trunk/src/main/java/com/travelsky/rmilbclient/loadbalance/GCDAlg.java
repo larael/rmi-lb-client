@@ -2,8 +2,11 @@ package com.travelsky.rmilbclient.loadbalance;
 
 import java.util.Collection;
 
+/**
+ * @author zhongfeng
+ *
+ */
 public class GCDAlg {
-
 	public static int gcd(int n, int m) {
 		int x;
 		while (m % n != 0) {

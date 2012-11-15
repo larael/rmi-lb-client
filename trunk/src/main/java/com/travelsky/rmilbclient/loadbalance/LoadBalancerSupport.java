@@ -10,14 +10,14 @@ import org.slf4j.LoggerFactory;
 
 public abstract class LoadBalancerSupport<E> implements LoadBalancer<E> {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
-	
+
 	private final List<E> processors = new CopyOnWriteArrayList<E>();
 
 	public void addProcessor(E processor) {
 		processors.add(processor);
 	}
-	
-	public void addProcessors(Collection<E> processors){
+
+	public void addProcessors(Collection<E> processors) {
 		this.processors.addAll(processors);
 	}
 
@@ -51,6 +51,10 @@ public abstract class LoadBalancerSupport<E> implements LoadBalancer<E> {
 			}
 		}
 		return processor;
+	}
+
+	public E select(String key) {
+		return select();
 	}
 
 	protected abstract E doSelect(List<E> processors);
