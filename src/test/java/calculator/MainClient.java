@@ -10,8 +10,8 @@ public class MainClient {
 
 	public static void main(String[] args) {
 		List<String> serviceUrls = new ArrayList<String>();
-		serviceUrls.add("rmi://localhost:8098/CalculatorRMIService");
-		serviceUrls.add("rmi://localhost:8099/CalculatorRMIService");
+		serviceUrls.add("rmi://localhost:8098/CalculatorService");
+		serviceUrls.add("rmi://localhost:8099/CalculatorService");
 		RmiLbServiceConfig<CalculatorService> config = new RmiLbServiceConfig<CalculatorService>(
 				serviceUrls, CalculatorService.class);
 		config.setMonitorPeriod(10L);//default 600 seconds
