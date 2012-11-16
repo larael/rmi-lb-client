@@ -5,6 +5,7 @@ package calculator;
 /**
  * The Calculator service interface.
  */
+@RmiServiceExplorer
 public interface CalculatorService {
 
     double add(double n1, double n2);

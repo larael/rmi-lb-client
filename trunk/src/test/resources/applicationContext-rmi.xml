@@ -5,15 +5,8 @@
       
     <bean id="CalculatorRmiService" class="calculator.CalculatorServiceImpl">  
     </bean>  
-    <bean id="baseServiceExporter" class="org.springframework.remoting.rmi.RmiServiceExporter">  
-        <!-- 调用Service -->  
-        <property name="service" ref="CalculatorRmiService"></property>  
-        <!-- value值是给用户调用 -->  
-        <property name="serviceName" value="CalculatorRMIService"></property>  
-        <!-- service 接口 -->  
-        <property name="serviceInterface" value="calculator.CalculatorService"></property>  
-        <!-- 注册端口号 -->  
-        <property name="registryPort" value="8099"></property>  
-    </bean>  
-	
+    <bean id="registry" class="org.springframework.remoting.rmi.RmiRegistryFactoryBean">   
+       <property name="port" value="8099"/>     
+    </bean>   
+	<bean class="calculator.RmiServiceExplorerPostProcessor"/>
 </beans>
