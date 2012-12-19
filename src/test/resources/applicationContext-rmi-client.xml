@@ -10,8 +10,8 @@
 				<!-- ServiceUrls -->
 				<property name="serviceUrls">
 					<list>
-						<value>rmi://localhost:8098/CalculatorRMIService</value>
-						<value>rmi://localhost:8099/CalculatorRMIService</value>
+						<value>rmi://localhost:8098/CalculatorService</value>
+						<value>rmi://localhost:8099/CalculatorService</value>
 					</list>
 				</property>
 				<!-- service interface -->
