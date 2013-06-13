@@ -12,7 +12,7 @@ public class RmiProxyFactoryBean implements FactoryBean {
 	private Object serviceProxy;
 
 	private RmiLbServiceConfig<?> config;
-	
+
 	/**
 	 * 
 	 */
@@ -33,7 +33,10 @@ public class RmiProxyFactoryBean implements FactoryBean {
 	}
 
 	public Class getObjectType() {
-		return config.getServiceInterface();
+		if (config != null) {
+			return config.getServiceInterface();
+		}
+		return null;
 	}
 
 	public boolean isSingleton() {
