@@ -3,8 +3,9 @@ package calculator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.travelsky.rmilbclient.RmiLbServiceConfig;
-import com.travelsky.rmilbclient.RmiProxyFactory;
+import org.googlecode.rmilbclient.RmiLbServiceConfig;
+import org.googlecode.rmilbclient.RmiProxyFactory;
+
 
 public class MainClient {
 

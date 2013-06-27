@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.googlecode.rmilbclient.loadbalance.WeightedRandomLoadBalancer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
