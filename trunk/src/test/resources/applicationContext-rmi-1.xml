@@ -9,7 +9,7 @@
         <!-- 调用Service -->  
         <property name="service" ref="CalculatorRmiService"></property>  
         <!-- value值是给用户调用 -->  
-        <property name="serviceName" value="CalculatorRMIService"></property>  
+        <property name="serviceName" value="CalculatorService"></property>  
         <!-- service 接口 -->  
         <property name="serviceInterface" value="calculator.CalculatorService"></property>  
         <!-- 注册端口号 -->  

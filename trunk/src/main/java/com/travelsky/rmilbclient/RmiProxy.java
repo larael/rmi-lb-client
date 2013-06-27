@@ -13,6 +13,7 @@ import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.travelsky.rmilbclient.exceptions.InvokeRawExecuteException;
 import com.travelsky.rmilbclient.exceptions.RmiExceptionUtils;
 import com.travelsky.rmilbclient.exceptions.RmiInvokeAsynExecuteException;
 import com.travelsky.rmilbclient.exceptions.RmiInvokeTimeoutException;
@@ -53,15 +54,30 @@ public class RmiProxy implements InvocationHandler {
 			throws Throwable {
 		try {
 			if (getTimeout() > 0) {
-				return invokeAsyn(method,args);
+				return invokeAsyn(method, args);
 			}
 			return doInvoke(method, args);
 		} catch (Throwable ex) {
-			if (RmiExceptionUtils.isConnectFailure(ex)) {
+			return handleConnectinFailure(method, args, ex);
+		}
+	}
+
+	/**
+	 * @param method
+	 * @param args
+	 * @param ex
+	 * @return
+	 */
+	private Object handleConnectinFailure(Method method, Object[] args,
+			Throwable ex) {
+		if (RmiExceptionUtils.isConnectFailure(ex)) {
+			try {
 				return handleRemoteConnectFailure(method, args, ex);
-			} else {
-				throw ex;
+			} catch (Throwable e) {
+				throw new InvokeRawExecuteException(ex);
 			}
+		} else {
+			throw new InvokeRawExecuteException(ex);
 		}
 	}
 
@@ -75,27 +91,20 @@ public class RmiProxy implements InvocationHandler {
 
 	private Object doInvoke(Method method, Object[] args) throws Throwable {
 		Object ret = null;
-		Object stub = getStubMgr().getStub();
-		if (stub != null)
-			try {
+		try {
+			Object stub = getStubMgr().getStub();
+			if (stub != null) {
 				ret = method.invoke(stub, args);
-			} catch (Throwable e) {
-				throw e;
 			}
+		} catch (Throwable ex) {
+			throw ex;
+		}
 		return ret;
 	}
 
 	private Object invokeAsyn(final Method method, final Object[] args) {
 		Future<Object> futureTask = EXEC_ASYN_SERVICE
-				.submit(new Callable<Object>() {
-					public Object call() throws Exception {
-						try {
-							return doInvoke(method, args);
-						} catch (Throwable e) {
-							throw new Exception(e);
-						}
-					}
-				});
+				.submit(createTask(method, args));
 		try {
 			return futureTask.get(getTimeout(), TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e) {
@@ -103,10 +112,28 @@ public class RmiProxy implements InvocationHandler {
 		} catch (ExecutionException e) {
 			throw new RmiInvokeAsynExecuteException(e);
 		} catch (TimeoutException e) {
-			throw new RmiInvokeTimeoutException(e);
+			throw new RmiInvokeTimeoutException(
+					"Invoke timeout error,timeout is: " + getTimeout());
 		} finally {
 			futureTask.cancel(true);
 		}
+	}
+
+	/**
+	 * @param method
+	 * @param args
+	 * @return
+	 */
+	private Callable<Object> createTask(final Method method, final Object[] args) {
+		return new Callable<Object>() {
+			public Object call() throws Exception {
+				try {
+					return doInvoke(method, args);
+				} catch (Throwable ex) {
+					return handleConnectinFailure(method, args, ex);
+				}
+			}
+		};
 	}
 
 	public StubManager getStubMgr() {

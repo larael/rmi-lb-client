@@ -24,4 +24,23 @@
 		</property>
 	</bean>
 
+	<bean id="CalculatorService" class="com.travelsky.rmilbclient.RmiProxyFactoryBean">
+		<property name="config">
+			<bean class="com.travelsky.rmilbclient.RmiLbServiceConfig">
+				<!-- ServiceUrls -->
+				<property name="serviceUrls">
+					<list>
+						<value>rmi://localhost:8098/CalculatorService</value>
+						<value>rmi://localhost:8099/CalculatorService</value>
+					</list>
+				</property>
+				<!-- service interface -->
+				<property name="serviceInterface" value="calculator.CalculatorService" />
+				<!-- Lookup stub on startup? -->
+				<property name="lookupStubOnStartup" value="false" />
+				<!-- Stub Status Monitor Period -->
+				<property name="monitorPeriod" value="600" />
+			</bean>
+		</property>
+	</bean>
 </beans>
