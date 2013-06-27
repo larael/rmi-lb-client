@@ -18,8 +18,7 @@ public class RmiProxyFactory {
 			.getLogger(RmiProxyFactory.class.getName());
 
 	@SuppressWarnings("unchecked")
-	private final static Map<RmiLbServiceConfig, Object> RMI_REMOTE_SERVICE_MAP = 
-		new ConcurrentHashMap<RmiLbServiceConfig, Object>();
+	private final static Map<RmiLbServiceConfig, Object> RMI_REMOTE_SERVICE_MAP = new ConcurrentHashMap<RmiLbServiceConfig, Object>();
 
 	/**
 	 * single instance
@@ -55,7 +54,8 @@ public class RmiProxyFactory {
 	 * @return a proxy to the object with the specified interface.
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized <T> T create(RmiLbServiceConfig<T> config, ClassLoader loader) {
+	public synchronized <T> T create(RmiLbServiceConfig<T> config,
+			ClassLoader loader) {
 		T ret = (T) RMI_REMOTE_SERVICE_MAP.get(config);
 		if (ret == null) {
 			ret = createRawService(config, loader);
@@ -68,7 +68,6 @@ public class RmiProxyFactory {
 		return create(config, Thread.currentThread().getContextClassLoader());
 	}
 
-
 	/**
 	 * @param <T>
 	 * @param config
@@ -77,21 +76,21 @@ public class RmiProxyFactory {
 	 */
 	private <T> T createRawService(RmiLbServiceConfig<T> config,
 			ClassLoader loader) {
-		
+
 		StubManager stubMgr = StubManagerBuilder.buildStubManager(config);
 		// start monitor
 		StubMonitorService monitorService = new StubMonitorService(config
 				.getMonitorPeriod(), stubMgr);
 		monitorService.startMonitor();
 		// create proxy
-		InvocationHandler handler = new RmiProxy(stubMgr);
+		InvocationHandler handler = new RmiProxy(stubMgr, config.getTimeout());
 		Class<T> api = config.getServiceInterface();
-		Object proxyObj = Proxy.newProxyInstance(loader,
-				new Class[] { api }, handler);
+		Object proxyObj = Proxy.newProxyInstance(loader, new Class[] { api },
+				handler);
 		T ret = api.cast(proxyObj);
 		return ret;
 	}
-	
+
 	public static RmiProxyFactory getInstance() {
 		return m_instance;
 	}

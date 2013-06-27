@@ -33,38 +33,33 @@ public class RmiLbServiceConfig<E> implements Serializable {
 	 * monitor 检测 间隔
 	 */
 	private long monitorPeriod = StubMonitorService.DEFAULF_PERIOD;
+	
+	/**
+	 * RMI 调用超时时间，由于RMI使用的是JVM级别的 sun.rmi.transport.tcp.responseTimeout
+	 * 来指定，缺陷是不能每个服务指定单独的超时时间,时间单位：毫秒
+	 */
+	private long timeout = -1;
 
 	/**
 	 * 
 	 */
 	public RmiLbServiceConfig() {
 	}
-
-	/**
-	 * @param serviceUrls
-	 * @param serviceInterface
-	 * @param lookupStubOnStartup
-	 * @param monitorPeriod
-	 */
+	
 	public RmiLbServiceConfig(List<String> serviceUrls,
 			Class<E> serviceInterface) {
 		this(serviceUrls, serviceInterface, false,
-				StubMonitorService.DEFAULF_PERIOD);
+				StubMonitorService.DEFAULF_PERIOD,-1);
 	}
 
-	/**
-	 * @param serviceUrls
-	 * @param serviceInterface
-	 * @param lookupStubOnStartup
-	 * @param monitorPeriod
-	 */
 	public RmiLbServiceConfig(List<String> serviceUrls,
 			Class<E> serviceInterface, boolean lookupStubOnStartup,
-			long monitorPeriod) {
+			long monitorPeriod,long timeout) {
 		setServiceUrls(serviceUrls);
 		setServiceInterface(serviceInterface);
 		this.lookupStubOnStartup = lookupStubOnStartup;
 		this.monitorPeriod = monitorPeriod;
+		this.timeout = timeout;
 	}
 
 	public List<String> getServiceUrls() {
@@ -106,15 +101,31 @@ public class RmiLbServiceConfig<E> implements Serializable {
 		this.monitorPeriod = monitorPeriod;
 	}
 
+	public long getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(long timeout) {
+		this.timeout = timeout;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (lookupStubOnStartup ? 1231 : 1237);
+		result = prime * result
+				+ (int) (monitorPeriod ^ (monitorPeriod >>> 32));
+		result = prime
+				* result
+				+ ((serviceInterface == null) ? 0 : serviceInterface.hashCode());
 		result = prime * result
 				+ ((serviceUrls == null) ? 0 : serviceUrls.hashCode());
+		result = prime * result + (int) (timeout ^ (timeout >>> 32));
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -124,10 +135,21 @@ public class RmiLbServiceConfig<E> implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		RmiLbServiceConfig other = (RmiLbServiceConfig) obj;
+		if (lookupStubOnStartup != other.lookupStubOnStartup)
+			return false;
+		if (monitorPeriod != other.monitorPeriod)
+			return false;
+		if (serviceInterface == null) {
+			if (other.serviceInterface != null)
+				return false;
+		} else if (!serviceInterface.equals(other.serviceInterface))
+			return false;
 		if (serviceUrls == null) {
 			if (other.serviceUrls != null)
 				return false;
 		} else if (!serviceUrls.equals(other.serviceUrls))
+			return false;
+		if (timeout != other.timeout)
 			return false;
 		return true;
 	}
@@ -136,7 +158,8 @@ public class RmiLbServiceConfig<E> implements Serializable {
 	public String toString() {
 		return "RmiLbServiceConfig [lookupStubOnStartup=" + lookupStubOnStartup
 				+ ", monitorPeriod=" + monitorPeriod + ", serviceInterface="
-				+ serviceInterface + ", serviceUrls=" + serviceUrls + "]";
+				+ serviceInterface + ", serviceUrls=" + serviceUrls
+				+ ", timeout=" + timeout + "]";
 	}
 
 }
