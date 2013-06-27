@@ -6,6 +6,12 @@ package calculator;
 public class CalculatorServiceImpl implements CalculatorService {
 
 	public double add(double n1, double n2) {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return n1 + n2;
 	}
 
