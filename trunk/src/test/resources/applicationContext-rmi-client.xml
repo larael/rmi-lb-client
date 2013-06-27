@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
 	default-lazy-init="false">
 
-	<bean id="CalculatorService" class="com.travelsky.rmilbclient.RmiProxyFactoryBean">
+	<bean id="CalculatorService" class="org.googlecode.rmilbclient.RmiProxyFactoryBean">
 		<property name="config">
 			<bean class="com.travelsky.rmilbclient.RmiLbServiceConfig">
 				<!-- ServiceUrls -->
@@ -24,7 +24,7 @@
 		</property>
 	</bean>
 
-	<bean id="CalculatorService" class="com.travelsky.rmilbclient.RmiProxyFactoryBean">
+	<bean id="CalculatorService" class="org.googlecode.rmilbclient.RmiProxyFactoryBean">
 		<property name="config">
 			<bean class="com.travelsky.rmilbclient.RmiLbServiceConfig">
 				<!-- ServiceUrls -->
