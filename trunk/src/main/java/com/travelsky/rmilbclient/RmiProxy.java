@@ -58,6 +58,8 @@ public class RmiProxy implements InvocationHandler {
 			}
 			return doInvoke(method, args);
 		} catch (Throwable ex) {
+			if( ex instanceof RmiInvokeTimeoutException)
+				throw ex;
 			return handleConnectinFailure(method, args, ex);
 		}
 	}
