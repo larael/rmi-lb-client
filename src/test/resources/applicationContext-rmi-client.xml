@@ -40,6 +40,9 @@
 				<property name="lookupStubOnStartup" value="false" />
 				<!-- Stub Status Monitor Period -->
 				<property name="monitorPeriod" value="600" />
+				<!-- timeout 保证服务调用在指定的时间返回，如果没有，抛出RmiInvokeTimeoutException -->
+				<property name="timeout" value="200" />
+
 			</bean>
 		</property>
 	</bean>
